@@ -8,7 +8,7 @@ import os, re, json
 
 DIR_NAME     = os.path.dirname(__file__)
 CITY_INFO_01 = os.path.join(DIR_NAME, 'city-info-01.txt')
-FORMATTED_01 = os.path.join(DIR_NAME, 'city-info.json')
+FORMATTED = os.path.join(DIR_NAME, 'city-info.json')
 
 #======================================================================
 
@@ -22,7 +22,7 @@ def format_city_info():
             if region not in record:
                 record[region] = []
             record[region].append((city, latitude, longitude))
-    with open(FORMATTED_01, 'w') as f:
+    with open(FORMATTED, 'w') as f:
         f.write(json.dumps(record))
 
 #======================================================================
