@@ -1,21 +1,23 @@
 #!/usr/bin/env python
 # -*- utf-8 -*-
-#======================================================================
+#=====================================================================================================
 
 import os, re, json
 import requests
-from os.path import join, dirname
+from os.path import join, dirname, abspath
 
-#======================================================================
+#=====================================================================================================
 
-DATA_ROOT     = join(dirname(dirname(__file__)), 'data')
+DATA_ROOT     = join(dirname(dirname(abspath(__file__))), 'data')
 CITY_INFO_01  = join(DATA_ROOT, 'city-info-01.txt')
 FORMATTED     = join(DATA_ROOT, 'city-info.json')
 WEATHER_DB    = join(DATA_ROOT, 'weather-db.json')
 
 WEAHTER_QUERY = 'http://sou.qq.com/online/get_weather.php'
 
-#======================================================================
+#=====================================================================================================
+# Construct city list
+#=====================================================================================================
 
 def format_city_info():
     record = {}
@@ -30,19 +32,13 @@ def format_city_info():
     with open(FORMATTED, 'w') as f:
         f.write(json.dumps(record))
 
-#======================================================================
-
 def get_city_list():
     with open(FORMATTED, 'r') as f:
         return json.loads(f.read())
 
-def get_location_range(cl):
-    max_latidude  = max([max([clause[1] for clause in cl[region]]) for region in cl.keys()])
-    min_latitude  = min([min([clause[1] for clause in cl[region]]) for region in cl.keys()])
-    max_longitude = max([max([clause[2] for clause in cl[region]]) for region in cl.keys()])
-    min_longitude = min([min([clause[2] for clause in cl[region]]) for region in cl.keys()])
-    return {'latidude' : (min_latitude , max_latidude),
-            'longitude': (min_longitude, max_longitude)}
+#=====================================================================================================
+# Construct weather list
+#=====================================================================================================
 
 def get_weather(city_name):
     param = {'callback': 'Weather', 'city': city_name}
@@ -70,7 +66,9 @@ def fetch_weather_list(cl, db=True):
         f.write(json.dumps(record))
     return record
 
-#======================================================================
+#=====================================================================================================
+# Complete the list containing all information needed for plotting
+#=====================================================================================================
 
 def get_all():
     cl = get_city_list()
@@ -85,7 +83,28 @@ def get_all():
                                longitude=longitude))
     return al
 
-#======================================================================
+#=====================================================================================================
+# Analyze metadata
+#=====================================================================================================
+
+def get_range(al):
+    max_lati = max([record['latitude'] for record in al])
+    min_lati = min([record['latitude'] for record in al])
+    max_long = max([record['longitude'] for record in al])
+    min_long = min([record['longitude'] for record in al])
+    max_temp = max([record['temp'] for record in al])
+    min_temp = min([record['temp'] for record in al])
+    return {'latidude' : (min_lati, max_lati),
+            'longitude': (min_long, max_long),
+            'temp'     : (min_temp, max_temp)}
+
+#=====================================================================================================
+
+def test():
+    al = get_all()
+    r = get_range(al)
+
+#=====================================================================================================
 
 if __name__ == '__main__':
     pass
