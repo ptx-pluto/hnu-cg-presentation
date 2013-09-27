@@ -4,14 +4,16 @@
 
 import os, re, json
 import requests
+from os.path import join, dirname
 
 #======================================================================
 
-DIR_NAME      = os.path.dirname(__file__)
-CITY_INFO_01  = os.path.join(DIR_NAME, 'city-info-01.txt')
-FORMATTED     = os.path.join(DIR_NAME, 'city-info.json')
+DATA_ROOT     = join(dirname(dirname(__file__)), 'data')
+CITY_INFO_01  = join(DATA_ROOT, 'city-info-01.txt')
+FORMATTED     = join(DATA_ROOT, 'city-info.json')
+WEATHER_DB    = join(DATA_ROOT, 'weather-db.json')
+
 WEAHTER_QUERY = 'http://sou.qq.com/online/get_weather.php'
-WEATHER_DB    = os.path.join(DIR_NAME, 'weather-db.json')
 
 #======================================================================
 
@@ -49,13 +51,19 @@ def get_weather(city_name):
     data = json.loads(match.group('json'))
     return float(data['real']['temperature'])
 
-def fetch_weather_list(cl):
+def fetch_weather_list(cl, db=True):
+    if db:
+        try:
+            with open(WEATHER_DB, 'r') as f:
+                return json.loads(f.read())
+        except:
+            pass
     record = { 'success': {}, 'fail': [] }
     for region in cl.keys():
         for city in cl[region]:
             try:
                 temp = get_weather(city[0])
-                record['success'][city[0]]= temp
+                record['success'][city[0]] = temp
             except:
                 record['fail'].append(city[0])
     with open(WEATHER_DB, 'w') as f:
@@ -64,11 +72,20 @@ def fetch_weather_list(cl):
 
 #======================================================================
 
-def main():
+def get_all():
     cl = get_city_list()
-    fetch_weather_list(cl)
+    wl = fetch_weather_list(cl)
+    al = []
+    for region in cl:
+        for city, latitude, longitude in cl[region]:
+            if city in wl['success']:
+                al.append(dict(city=city, 
+                               temp=wl['success'][city], 
+                               latitude=latitude, 
+                               longitude=longitude))
+    return al
 
 #======================================================================
 
 if __name__ == '__main__':
-    main()
+    pass
