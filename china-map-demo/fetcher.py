@@ -94,7 +94,7 @@ def get_range(al):
     min_long = min([record['longitude'] for record in al])
     max_temp = max([record['temp'] for record in al])
     min_temp = min([record['temp'] for record in al])
-    return {'latidude' : (min_lati, max_lati),
+    return {'latitude' : (min_lati, max_lati),
             'longitude': (min_long, max_long),
             'temp'     : (min_temp, max_temp)}
 
