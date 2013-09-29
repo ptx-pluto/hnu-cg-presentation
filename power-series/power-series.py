@@ -47,20 +47,18 @@ def power_sin(level):
     pyplot.title('Power series of sin')
     interval = numpy.arange(0.0, 20.0, 0.01)
     pyplot.axis([0,20,-2,2])
-
     for depth in range(1,level+1,2):
         func = get_series(sin_term, depth)
         pyplot.plot(interval, func(interval), color=(1-depth/level,1-depth/level,0.2))
-        pyplot.text(1, 1.5, 'iterate depth = %d' % depth)
+#        pyplot.text(1, 1.5, 'iterate depth = %d' % depth)
         pyplot.savefig( PLOT_PATH + '/power-sin-'+ str(depth) + '.png', dpi=256 )
 
 def power_cos(level):
-    pyplot.figure()
-    pyplot.title('Power series of cos')
-    interval = numpy.arange(0.0, 20.0, 0.01)
-    pyplot.axis([0,20,-2,2])
-
     for depth in range(2,level+1,2):
+        pyplot.figure()
+        pyplot.title('Power series of cos')
+        interval = numpy.arange(0.0, 20.0, 0.01)
+        pyplot.axis([0,20,-2,2])
         func = get_series(cos_term, depth)
         pyplot.plot(interval, func(interval), color=(1-depth/level,1-depth/level,0.2))
         pyplot.text(1, 1.5, 'iterate depth = %d' % level)
@@ -80,5 +78,5 @@ def power_ex():
 #=============================================================================================
 
 if __name__ == '__main__':
+    pass
 #    power_sin(70)
-    power_cos(70)
