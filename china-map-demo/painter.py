@@ -4,7 +4,7 @@
 from numpy import r_
 from scipy.interpolate import interp1d, griddata
 from  mpl_toolkits.mplot3d import Axes3D
-
+from matplotlib import cm
 import numpy as np
 import matplotlib.pyplot as plt
 import math
@@ -35,13 +35,13 @@ grid_z = griddata(city_positions, city_temps, (grid_x, grid_y), method='linear')
 def draw_map():
     fig = plt.figure()
     ax = Axes3D(fig)
-    ax.plot_surface(grid_x, grid_y, grid_z)
+    ax.plot_surface(grid_x, grid_y, grid_z, cmap=cm.coolwarm, rstride=1, cstride=1, linewidth=0)
     fig.show()
 
 def draw_map_flat():
     plt.imshow(grid_z.T, extent=(min_long,max_long,min_lati,max_lati), origin='lower')
     plt.show()
-    
+
 #============================================================================
 
 if __name__ == '__main__':
