@@ -44,7 +44,7 @@ def interp_3d_full():
     
     plt.show()
 
-def interp_3d_big():
+def interp_3d_nearest():
     fig = plt.figure()
     ax = Axes3D(fig)
     ax.plot_surface(grid_x, grid_y, grid_z0, rstride=1, cstride=1, cmap=cm.coolwarm, linewidth=0)
@@ -57,6 +57,17 @@ def interp_3d_origin():
     ax.plot(points[:,0], points[:,1], 'k.', ms=1)
     plt.show()
 
+def interp_3d_linear():
+    fig = plt.figure()
+    ax = Axes3D(fig)
+    ax.plot_surface(grid_x, grid_y, grid_z1, rstride=1, cstride=1, cmap=cm.coolwarm, linewidth=0)
+    plt.show()
+
+def interp_3d_cubic():
+    fig = plt.figure()
+    ax = Axes3D(fig)
+    ax.plot_surface(grid_x, grid_y, grid_z2, rstride=1, cstride=1, cmap=cm.coolwarm, linewidth=0)
+    plt.show()
 
 def interp_3d_flat():
     # original function and random points
