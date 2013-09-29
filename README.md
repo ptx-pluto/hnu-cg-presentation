@@ -4,6 +4,11 @@ In-Class CG Presentation
 Power series of real function
 ------
 
+Interpolation
+------
+interpolate a multi-variable function X*Y->Z
+draw 2D/3D graphic representations of the results yield from differerent interpolation strategies 
+
 Weather map of China
 ------
 
